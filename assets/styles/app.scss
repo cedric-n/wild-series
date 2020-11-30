@@ -1,0 +1,18 @@
+
+
+$color: red;
+$main-color: #1A1B41;
+$secondary-color: #F1FFE7;
+
+$theme-colors: (
+        "primary": #0074d9,
+        "dark": $main-color
+);
+
+// Bootstrap and its default variables
+@import "node_modules/bootstrap/scss/bootstrap";
+body {
+  background-color: $secondary-color;
+
+}
+
