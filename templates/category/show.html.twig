@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Liste de programme par catégorie</h1>
+
+    {% for program in programs %}
+        <div>
+            <h2>  {{ program.id }} - <a href="{{ path("program_show", { id: program.id }) }}">{{ program.title }}</a></h2>
+            <p>{{ program.summary }}</p>
+
+        </div>
+    {% else %}
+        Cette categorie ne contient pas de programme pour l'instant.
+    {% endfor %}
+{% endblock %}
+
+{% block javascript %}
+
+{% endblock %}
