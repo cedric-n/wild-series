@@ -32,9 +32,9 @@ class ProgramController extends AbstractController
     /**
      * @param int $id
      * @return Response
-     * @Route("/show/{id}",methods={"GET"}, requirements={"id"="^[0-9]+$"}, name="show")
+     * @Route("/{id}",methods={"GET"}, requirements={"id"="^[0-9]+$"}, name="show")
      */
-    public function show(int $id = 1): Response
+    public function show(int $id): Response
     {
         $program = $this->getDoctrine()
             ->getRepository(Program::class)
