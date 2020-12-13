@@ -47,7 +47,7 @@ class ProgramController extends AbstractController
 
         $form->handleRequest($request);
 
-        if ($form->isSubmitted()) {
+        if ($form->isSubmitted() && $form->isValid()) {
 
             $entityManager = $this->getDoctrine()->getManager();
 
@@ -98,7 +98,6 @@ class ProgramController extends AbstractController
      */
     public function showSeason(Program $program,Season $season): Response
     {
-
 
         return $this->render('program/season_show.html.twig', [
             "program" => $program,
