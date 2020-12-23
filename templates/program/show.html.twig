@@ -20,6 +20,19 @@
                     <a href="{{ path("program_season_show", { program_id: program.id, season_id: season.id }) }}">season {{ season.number }}</a>
                 </div>
             {% endfor %}
+
+            <strong>Acteurs :</strong>
+
+                {% for actor in program.actors %}
+                    <div>
+                        <a href="{{ path("actor_show", { actor: actor.id}) }}">{{ actor.name }}</a>
+                    </div>
+                {% else %}
+                    <div>
+                        Aucun acteur pour cette série
+                    </div>
+                {% endfor %}
+
         </div>
 
     </div>
