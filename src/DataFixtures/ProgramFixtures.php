@@ -5,15 +5,21 @@ namespace App\DataFixtures;
 
 
 use App\Entity\Program;
+use App\Service\Slugify;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
 class ProgramFixtures extends Fixture implements DependentFixtureInterface
 {
+    private $slug;
+
+    public function __construct(Slugify $slug) {
+        $this->slug = $slug;
+    }
     const PROGRAMS = [
 
-        'Walking Dead' => [
+        'Walking-Dead' => [
 
             'summary' => 'Le policier Rick Grimes se réveille après un long coma. Il découvre avec effarement que le monde, ravagé par une épidémie, est envahi par les morts-vivants.',
 
@@ -21,7 +27,7 @@ class ProgramFixtures extends Fixture implements DependentFixtureInterface
 
         ],
 
-        'The Haunting Of Hill House' => [
+        'The-Haunting-Of--Hill-House' => [
 
             'summary' => 'Plusieurs frères et sœurs qui, enfants, ont grandi dans la demeure qui allait devenir la maison hantée la plus célèbre des États-Unis, sont contraints de se réunir pour finalement affronter les fantômes de leur passé.',
 
@@ -29,7 +35,7 @@ class ProgramFixtures extends Fixture implements DependentFixtureInterface
 
         ],
 
-        'American Horror Story' => [
+        'Àmérican Horror Story' => [
 
             'summary' => 'A chaque saison, son histoire. American Horror Story nous embarque dans des récits à la fois poignants et cauchemardesques, mêlant la peur, le gore et le politiquement correct.',
 
@@ -37,7 +43,7 @@ class ProgramFixtures extends Fixture implements DependentFixtureInterface
 
         ],
 
-        'Love Death And Robots' => [
+        'Love DÉath And Robots' => [
 
             'summary' => 'Un yaourt susceptible, des soldats lycanthropes, des robots déchaînés, des monstres-poubelles, des chasseurs de primes cyborgs, des araignées extraterrestres et des démons assoiffés de sang : tout ce beau monde est réuni dans 18 courts métrages animés déconseillés aux âmes sensibles.',
 
@@ -80,6 +86,9 @@ class ProgramFixtures extends Fixture implements DependentFixtureInterface
             $program->setTitle($titles);
             $program->setSummary($data['summary']);
             $program->setCategory($this->getReference('category_0'));
+            $url = $this->slug->generate($program->getTitle());
+            $program->setSlug($url);
+
             $manager->persist($program);
             $this->setReference('program_' . $i,$program);
             $i++;
