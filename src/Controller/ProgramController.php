@@ -67,47 +67,10 @@ class ProgramController extends AbstractController
             return $this->redirectToRoute('program_index');
         }
 
-        return $this->render('program/newEp.html.twig', [
+        return $this->render('program/new.html.twig', [
             "form" => $form->createView(),
         ]);
     }
-
-    /**
-     * @param Request $request
-     * @param Slugify $slugify
-     * @return Response
-     * @Route("/episode", name="new_episode")
-     */
-    public function newEpisode(Request $request, Slugify $slugify):Response
-    {
-        $episode = new Episode();
-
-
-        $slug = $slugify->generate($episode->getTitle());
-
-        $episode->setSlug($slug);
-
-
-
-        $form = $this->createForm(EpisodeType::class, $episode);
-
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted()) {
-            $entityManager = $this->getDoctrine()->getManager();
-
-            $entityManager->persist($episode);
-
-            $entityManager->flush();
-
-            return $this->redirectToRoute('program_episode_show', ["slug" => $episode->getSeason()->getProgram()->getSlug(), "seasonId" => $episode->getSeason()->getNumber(), "eslug" => $episode->getSlug()]);
-        }
-
-        return $this->render('program/newEp.html.twig',[
-            'form' => $form->createView()
-        ]);
-    }
-
 
     /**
      * @param Program $program
