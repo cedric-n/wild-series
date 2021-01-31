@@ -27,18 +27,28 @@ class EpisodeFixtures extends Fixture implements DependentFixtureInterface
         // TODO: Implement load() method.
         $faker = Faker\Factory::create('en_US');
 
-        for ($i = 0; $i < 40; $i++) {
 
-            $episode = new Episode();
-            $episode->setNumber($faker->numberBetween(1,18));
-            $episode->setTitle($faker->jobTitle);
-            $episode->setSynopsis($faker->sentence);
-            $y = $faker->numberBetween(0,19);
-            $episode->setSeason($this->getReference('season_' . $y));
-            $url = $this->slug->generate($episode->getTitle());
-            $episode->setSlug($url);
-            $manager->persist($episode);
-        }
+            for ($p= 0; $p <= 5; $p++) {
+
+                for ($y = 0; $y < 5; $y++) {
+
+                    for ($e = 0; $e < 10; $e++) {
+
+                        $episode = new Episode();
+                        $episode->setNumber($e);
+                        $episode->setTitle($faker->jobTitle);
+                        $episode->setSynopsis($faker->sentence);
+                        $episode->setSeason($this->getReference('season_' . $y . $p));
+                        $url = $this->slug->generate($episode->getTitle());
+                        $episode->setSlug($url);
+                        $manager->persist($episode);
+
+                    }
+
+                }
+
+            }
+
 
         $manager->flush();
 
