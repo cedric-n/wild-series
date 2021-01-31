@@ -65,10 +65,11 @@ class ProgramController extends AbstractController
             return $this->redirectToRoute('program_index');
         }
 
-        return $this->render('program/new.html.twig', [
+        return $this->render('program/newEp.html.twig', [
             "form" => $form->createView(),
         ]);
     }
+
 
     /**
      * @param Program $program

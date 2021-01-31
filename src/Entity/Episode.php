@@ -20,7 +20,7 @@ class Episode
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $title;
+    private $title = "hello";
 
     /**
      * @ORM\Column(type="integer")
@@ -30,7 +30,7 @@ class Episode
     /**
      * @ORM\Column(type="text")
      */
-    private $synopsis;
+    private ?string $synopsis;
 
     /**
      * @ORM\ManyToOne(targetEntity=Season::class, inversedBy="episodes")
@@ -101,7 +101,7 @@ class Episode
         return $this->slug;
     }
 
-    public function setSlug(string $slug): self
+    public function setSlug(?string $slug): self
     {
         $this->slug = $slug;
 
