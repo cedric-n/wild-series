@@ -4,6 +4,7 @@
 namespace App\DataFixtures;
 
 
+use App\Entity\Program;
 use App\Entity\Season;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
@@ -20,20 +21,24 @@ class SeasonFixtures extends Fixture implements DependentFixtureInterface
     {
         // TODO: Implement load() method.
         $faker = Faker\Factory::create('en_US');
-        $y = 0;
         $z = 0;
-        for ($i = 0; $i < 20; $i++) {
+        for ($i = 0; $i <= 5; $i++) {
 
-            $season = new Season();
-            $season->setDescription($faker->sentence);
-            $season->setYear($faker->year);
-            $y = rand(0,5);
-            $season->setProgram($this->getReference('program_' . $y));
-            $season->setNumber($faker->numberBetween(1,10));
-            $manager->persist($season);
-            $this->setReference('season_' . $z, $season);
-            $z++;
+            for ($y = 0; $y < 5; $y++) {
+
+                $season = new Season();
+                $season->setDescription($faker->sentence);
+                $season->setYear($faker->year);
+                $season->setProgram($this->getReference('program_' . $y));
+                $season->setNumber($i);
+                $manager->persist($season);
+                $this->setReference('season_' . $y . $i, $season);
+
+            }
+
         }
+
+
 
         $manager->flush();
 
