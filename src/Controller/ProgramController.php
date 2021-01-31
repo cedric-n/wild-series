@@ -46,9 +46,6 @@ class ProgramController extends AbstractController
     {
         $program = new Program();
 
-        $slug = $slugify->generate($program->getTitle());
-        $program->setSlug($slug);
-
         $form = $this->createForm(ProgramType::class, $program);
 
         $form->handleRequest($request);

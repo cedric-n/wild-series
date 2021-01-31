@@ -30,16 +30,20 @@ class EpisodeController extends AbstractController
         $episode = new Episode();
 
 
-        $slug = $slugify->generate($episode->getTitle());
 
-        $episode->setSlug($slug);
 
         $form = $this->createForm(EpisodeType::class, $episode);
 
         $form->handleRequest($request);
 
-        if ($form->isSubmitted()) {
+
+
+        if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
+
+            $slug = $slugify->generate($episode->getTitle());
+
+            $episode->setSlug($slug);
 
             $entityManager->persist($episode);
 
