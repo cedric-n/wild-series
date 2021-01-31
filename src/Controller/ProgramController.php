@@ -6,6 +6,7 @@ use App\Entity\Episode;
 use App\Entity\Program;
 use App\Entity\Season;
 use App\Form\ProgramType;
+use App\Form\EpisodeType;
 use App\Service\Slugify;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -37,6 +38,7 @@ class ProgramController extends AbstractController
 
     /**
      * @param Request $request
+     * @param Slugify $slugify
      * @return Response
      * @Route ("/new", name="new")
      */
@@ -67,6 +69,42 @@ class ProgramController extends AbstractController
 
         return $this->render('program/newEp.html.twig', [
             "form" => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @param Request $request
+     * @param Slugify $slugify
+     * @return Response
+     * @Route("/episode", name="new_episode")
+     */
+    public function newEpisode(Request $request, Slugify $slugify):Response
+    {
+        $episode = new Episode();
+
+
+        $slug = $slugify->generate($episode->getTitle());
+
+        $episode->setSlug($slug);
+
+
+
+        $form = $this->createForm(EpisodeType::class, $episode);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted()) {
+            $entityManager = $this->getDoctrine()->getManager();
+
+            $entityManager->persist($episode);
+
+            $entityManager->flush();
+
+            return $this->redirectToRoute('program_episode_show', ["slug" => $episode->getSeason()->getProgram()->getSlug(), "seasonId" => $episode->getSeason()->getNumber(), "eslug" => $episode->getSlug()]);
+        }
+
+        return $this->render('program/newEp.html.twig',[
+            'form' => $form->createView()
         ]);
     }
 

@@ -19,38 +19,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class EpisodeController extends AbstractController
 {
 
-    /**
-     * @param Request $request
-     * @param Slugify $slugify
-     * @return Response
-     * @Route("/new/episode", name="new")
-     */
-    public function newEpisode(Request $request, Slugify $slugify):Response
-    {
-        $episode = new Episode();
 
-        $slug = $slugify->generate($episode->getTitle());
-
-        $episode->setSlug($slug);
-
-        $form = $this->createForm(EpisodeType::class, $episode);
-
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted()) {
-            $entityManager = $this->getDoctrine()->getManager();
-
-            $entityManager->persist($episode);
-
-            $entityManager->flush();
-
-            return $this->redirectToRoute('program_episode_show');
-        }
-
-        return $this->render('episode/newEp.html.twig',[
-            'form' => $form->createView()
-        ]);
-    }
 
 
 
