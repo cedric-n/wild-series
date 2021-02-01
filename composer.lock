@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b62b4aa4f075d00051be3a5e8c417f26",
+    "content-hash": "47a2c59418acb974a1f495383c079e74",
     "packages": [
         {
             "name": "composer/package-versions-deprecated",
@@ -4061,16 +4061,16 @@
         },
         {
             "name": "symfony/mailer",
-            "version": "v5.1.10",
+            "version": "v5.1.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/mailer.git",
-                "reference": "bc6c244e27dbb1d843565b9905e50f318a9e675c"
+                "reference": "3c7ab7a402acdb453dcdd6e0b2982caacfcc9b9f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/mailer/zipball/bc6c244e27dbb1d843565b9905e50f318a9e675c",
-                "reference": "bc6c244e27dbb1d843565b9905e50f318a9e675c",
+                "url": "https://api.github.com/repos/symfony/mailer/zipball/3c7ab7a402acdb453dcdd6e0b2982caacfcc9b9f",
+                "reference": "3c7ab7a402acdb453dcdd6e0b2982caacfcc9b9f",
                 "shasum": ""
             },
             "require": {
@@ -4118,7 +4118,7 @@
                     "homepage": "https://symfony.com/contributors"
                 }
             ],
-            "description": "Symfony Mailer Component",
+            "description": "Helps sending emails",
             "homepage": "https://symfony.com",
             "funding": [
                 {
@@ -4134,7 +4134,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-12-18T08:02:46+00:00"
+            "time": "2021-01-27T10:01:46+00:00"
         },
         {
             "name": "symfony/mime",
@@ -7956,7 +7956,7 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=7.2.5",
+        "php": ">=7.4",
         "ext-ctype": "*",
         "ext-iconv": "*"
     },

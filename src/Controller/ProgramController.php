@@ -6,12 +6,13 @@ use App\Entity\Episode;
 use App\Entity\Program;
 use App\Entity\Season;
 use App\Form\ProgramType;
-use App\Form\EpisodeType;
 use App\Service\Slugify;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -42,7 +43,7 @@ class ProgramController extends AbstractController
      * @return Response
      * @Route ("/new", name="new")
      */
-    public function new(Request $request, Slugify $slugify): Response
+    public function new(Request $request, Slugify $slugify, MailerInterface $mailer): Response
     {
         $program = new Program();
 
@@ -60,6 +61,16 @@ class ProgramController extends AbstractController
             $entityManager->persist($program);
 
             $entityManager->flush();
+
+            $email = (new Email())
+                ->from('4b3a8a02e7-03418d@inbox.mailtrap.io')
+                ->to('4b3a8a02e7-03418d@inbox.mailtrap.io')
+                ->subject('A new Program have been added')
+                ->html($this->renderView('program/newProgramEmail.html.twig', [
+                    'program' => $program
+                ]));
+
+            $mailer->send($email);
 
             return $this->redirectToRoute('program_index');
         }
