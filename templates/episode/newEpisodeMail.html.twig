@@ -1,27 +1,11 @@
-<!DOCTYPE html>
+{% extends 'layoutEmail.html.twig' %}
 
-<html lang="en">
+{% block title %}{% endblock %}
 
-<head>
+{% block header1 %}New episode {{ episode.title }} created{% endblock %}
 
-    <meta charset="UTF-8">
+{% block main_Paragraph %}<p>Hello, the episode {{ episode.number }} {{ episode.title }} has been created on Wild Series</p>{% endblock %}
 
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+{% block secondary %}<p>Synopsis : {{episode.synopsis }}</p>{% endblock %}
 
-    <title>New program</title>
-
-</head>
-
-<body>
-
-<h1>New episode {{ episode.title }} created</h1>
-
-<p>Hello, the episode {{ episode.number }} {{ episode.title }} has been created on Wild Series</p>
-
-<p>Synopsis : {{episode.synopsis }}</p>
-
-<p>Link to the episode created : <a href="http://127.0.0.1:8000{{ path('program_episode_show', { slug: program.slug, seasonId: season.id, eslug: episode.slug }) }}">cliquer ici pour voire l'épisode</a></p>
-
-</body>
-
-</html>
+{% block link %}<a href="http://127.0.0.1:8000{{ path('program_episode_show', { slug: program.slug, seasonId: season.id, eslug: episode.slug }) }}">cliquer ici pour voire l'épisode</a>{% endblock %}

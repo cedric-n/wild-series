@@ -1,25 +1,10 @@
-<!DOCTYPE html>
+{% extends 'layoutEmail.html.twig' %}
 
-<html lang="en">
+{% block title %}New Program{% endblock %}
 
-<head>
+{% block header1 %}New program {{ program.title }} created{% endblock %}
 
-    <meta charset="UTF-8">
+{% block main_Paragraph %}<p> Hello, the new program {{ program.title }} has been created on Wild Series </p> {% endblock %}
 
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+{% block secondary %}<p>Summary : {{program.summary }}</p>{% endblock %}
 
-    <title>New program</title>
-
-</head>
-
-<body>
-
-<h1>New program {{ program.title }} created</h1>
-
-<p>Hello, the new program {{ program.title }} has been created on Wild Series</p>
-
-<p>Summary : {{program.summary }}
-
-</body>
-
-</html>
