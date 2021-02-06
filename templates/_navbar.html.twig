@@ -5,6 +5,17 @@
                 <a class="navbar-brand" href="/">
                     <h1>WILD SERIES</h1>
                 </a>
+                {% if app.user %}
+
+                    {{ app.user.email }}
+
+                    <a href="{{ path('app_logout') }}"> Se déconnecter</a>
+
+                {% else %}
+
+                    <a href="{{ path('app_login') }}"> Se connecter</a>
+
+                {% endif %}
             </nav>
         </nav>
     </div>
