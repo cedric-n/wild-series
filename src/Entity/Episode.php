@@ -16,7 +16,7 @@ class Episode
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private ?int $id;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -28,12 +28,12 @@ class Episode
      *     maxMessage="Your title cannot be longer than {{ limit }} characters"
      *     )
      */
-    private $title;
+    private ?string $title;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private $number;
+    private ?int $number;
 
     /**
      * @ORM\Column(type="text")
@@ -44,12 +44,12 @@ class Episode
      * @ORM\ManyToOne(targetEntity=Season::class, inversedBy="episodes")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $season;
+    private ?Season $season;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $slug;
+    private ?string $slug;
 
     public function getId(): ?int
     {
