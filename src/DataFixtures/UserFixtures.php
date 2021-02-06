@@ -10,7 +10,7 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 class UserFixtures extends Fixture
 {
 
-    private $passwordEncoder;
+    private UserPasswordEncoderInterface $passwordEncoder;
 
     public function __construct (UserPasswordEncoderInterface $passwordEncoder)
     {
@@ -30,6 +30,7 @@ class UserFixtures extends Fixture
             $contributor,
             'contributorpassword'
         ));
+        $this->setReference('contributor',$contributor);
 
         $manager->persist($contributor);
 

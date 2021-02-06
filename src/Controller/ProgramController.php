@@ -6,6 +6,7 @@ use App\Entity\Comment;
 use App\Entity\Episode;
 use App\Entity\Program;
 use App\Entity\Season;
+use App\Entity\User;
 use App\Form\CommentType;
 use App\Form\ProgramType;
 use App\Service\Slugify;
@@ -13,10 +14,11 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
-
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * @Route("/programs", name="program_")
@@ -43,11 +45,17 @@ class ProgramController extends AbstractController
     /**
      * @param Request $request
      * @param Slugify $slugify
+     * @param MailerInterface $mailer
      * @return Response
+     * @throws TransportExceptionInterface
      * @Route ("/new", name="new")
      */
     public function new(Request $request, Slugify $slugify, MailerInterface $mailer): Response
     {
+
+        /** @var User $user */
+        $user = $this->getUser();
+
         $program = new Program();
 
         $form = $this->createForm(ProgramType::class, $program);
@@ -55,6 +63,8 @@ class ProgramController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted()) {
+
+            $program->setOwner($user);
 
             $slug = $slugify->generate($program->getTitle());
             $program->setSlug($slug);
@@ -108,6 +118,37 @@ class ProgramController extends AbstractController
     }
 
     /**
+     * @param Request $request
+     * @param Program $program
+     * @return Response
+     * @Route("/{slug}/edit", methods={"GET","POST"}, name="edit",)
+     * @ParamConverter("program", class="App\Entity\Program", options={"mapping": {"slug": "slug"}})
+     */
+    public function edit(Request $request, Program $program): Response
+    {
+        $form = $this->createForm(ProgramType::class, $program);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            if (!($this->getUser() == $program->getOwner())) {
+                // If not the owner, throws a 403 Access Denied exception
+
+                throw new AccessDeniedException('Only the owner can edit the program!');
+            }
+
+            $this->getDoctrine()->getManager()->flush();
+
+            return $this->redirectToRoute('program_index');
+        }
+
+        return $this->render('program/edit.html.twig',[
+            "program" => $program,
+            "form" => $form->createView()
+        ]);
+    }
+
+    /**
      * @param Program $program
      * @param Season $season
      * @return Response
@@ -131,6 +172,7 @@ class ProgramController extends AbstractController
      * @param Program $program
      * @param Season $season
      * @param Episode $episode
+     * @param Request $request
      * @return Response
      * @Route("/{slug}/seasons/{seasonId}/episodes/{eslug}", name="episode_show")
      * @ParamConverter("program", class="App\Entity\Program", options={"mapping": {"slug": "slug"}})
@@ -141,7 +183,7 @@ class ProgramController extends AbstractController
     {
 
 
-        /** @var \App\Entity\User $user */
+        /** @var User $user */
         $user = $this->getUser();
 
         $comment = new Comment();
@@ -180,6 +222,24 @@ class ProgramController extends AbstractController
             'listComments' => $listComment,
             'form' => $form->createView(),
         ]);
+    }
+
+    /**
+     * @param Request $request
+     * @param Program $program
+     * @return Response
+     * @Route("/{slug}", name="delete", methods={"DELETE"})
+     * @ParamConverter("program", class="App\Entity\Program", options={"mapping": {"slug": "slug"}})
+     */
+    public function delete(Request $request, Program $program): Response
+    {
+        if ($this->isCsrfTokenValid('delete'.$program->getId(), $request->request->get('_token'))) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->remove($program);
+            $entityManager->flush();
+        }
+
+        return $this->redirectToRoute('program_index');
     }
 
 }
