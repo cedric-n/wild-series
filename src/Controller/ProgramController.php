@@ -185,7 +185,6 @@ class ProgramController extends AbstractController
 
         /** @var User $user */
         $user = $this->getUser();
-
         $comment = new Comment();
         $comment->getAuthor();
         $comment->getEpisode();

@@ -6,7 +6,7 @@
         <p>
             {{ synopsis }}
         </p>
-        {% if app.user %}
+
             <div class="border">
                 <h2>Comment</h2>
                 {% for listComment in listComments %}
@@ -14,18 +14,26 @@
                         {{ listComment.id }}.
                         <p>
                             {{ listComment.comment }}
+                            {% if app.user == listComment.author %}
+
+                                <a href="{{ path("comment_edit", { id : listComment.id }) }}">edit</a>
+
+                            {% elseif  app.user == 'ROLE_ADMIN' %}
+                                <a href="{{ path("comment_edit", { id : listComment.id }) }}">edit</a>
+                            {% endif %}
                         </p>
                     </div>
                 {% endfor %}
             </div>
 
+            {% if app.user %}
             <div>
                 {{ include('comment/_form.html.twig') }}
             </div>
-            <a class="btn-primary" href="{{ path('comment_new') }}">Add a new Comment</a>
-        {% else %}
-            Connecter vous pour voir ou ajouter un commentaire
-        {% endif %}
+                <a class="btn-primary" href="{{ path('comment_new') }}">Add a new Comment</a>
+            {% endif %}
+
+
     </div>
 {% endblock %}
 
